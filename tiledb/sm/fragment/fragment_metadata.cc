@@ -211,7 +211,7 @@ Status FragmentMetadata::add_max_buffer_sizes_dense(
         buffer_sizes) {
   // Calculate the ids of all tiles overlapping with subarray
   auto tids = compute_overlapping_tile_ids(subarray);
-  uint64_t size;
+  uint64_t size = 0;
 
   // Compute buffer sizes
   for (auto& tid : tids) {
@@ -240,7 +240,7 @@ Status FragmentMetadata::add_max_buffer_sizes_sparse(
   RETURN_NOT_OK(load_mbrs(encryption_key));
 
   unsigned tid = 0;
-  uint64_t size;
+  uint64_t size = 0;
   auto dim_num = array_schema_->dim_num();
   for (auto& mbr : mbrs_) {
     if (utils::geometry::overlap(static_cast<T*>(mbr), subarray, dim_num)) {
