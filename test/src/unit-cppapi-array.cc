@@ -478,6 +478,42 @@ TEST_CASE(
     vfs.remove_dir(array_name);
 }
 
+TEST_CASE(
+    "C++ API: Consolidation of sequential fragment writes",
+    "[cppapi], [consolidation-sequential]") {
+  Context ctx;
+  VFS vfs(ctx);
+  const std::string array_name = "cpp_unit_array";
+
+  if (vfs.is_dir(array_name))
+    vfs.remove_dir(array_name);
+
+  Domain domain(ctx);
+  domain.add_dimension(Dimension::create<int>(ctx, "", {{0, 11}}, 12));
+
+  ArraySchema schema(ctx, TILEDB_DENSE);
+  schema.set_domain(domain).set_order({{TILEDB_ROW_MAJOR, TILEDB_ROW_MAJOR}});
+  schema.add_attribute(Attribute::create<int>(ctx, ""));
+
+  tiledb::Array::create(array_name, schema);
+  auto array_w = tiledb::Array(ctx, array_name, TILEDB_WRITE);
+  auto query_w = tiledb::Query(ctx, array_w, TILEDB_WRITE);
+  std::vector<int> data = {0, 1};
+
+  query_w.set_buffer("", data).set_subarray({0, 1}).submit();
+  query_w.set_buffer("", data).set_subarray({2, 3}).submit();
+  // this fragment write caused crash during consolidation
+  //   https://github.com/TileDB-Inc/TileDB/issues/1205
+  //   https://github.com/TileDB-Inc/TileDB/issues/1212
+  query_w.set_buffer("", data).set_subarray({3, 4}).submit();
+  query_w.finalize();
+  array_w.close();
+  Array::consolidate(ctx, array_name);
+
+  if (vfs.is_dir(array_name))
+    vfs.remove_dir(array_name);
+}
+
 TEST_CASE("C++ API: Encrypted array", "[cppapi], [encryption]") {
   Context ctx;
   VFS vfs(ctx);
@@ -517,10 +553,6 @@ TEST_CASE("C++ API: Encrypted array", "[cppapi], [encryption]") {
   REQUIRE_THROWS_AS(array.open(TILEDB_WRITE), tiledb::TileDBError);
   array.open(TILEDB_WRITE, TILEDB_AES_256_GCM, key, key_len);
   REQUIRE(Array::encryption_type(ctx, array_name) == TILEDB_AES_256_GCM);
-
-  REQUIRE_THROWS_AS(
-      [&]() { Array array2(ctx, array_name, TILEDB_WRITE); }(),
-      tiledb::TileDBError);
 
   Query query(ctx, array);
   query.set_layout(TILEDB_ROW_MAJOR);
@@ -578,7 +610,8 @@ TEST_CASE("C++ API: Encrypted array", "[cppapi], [encryption]") {
 }
 
 TEST_CASE(
-    "C++ API: Encrypted array, std::string key", "[cppapi], [encryption]") {
+    "C++ API: Encrypted array, std::string key",
+    "[cppapi][encryption][cppapi-encryption]") {
   Context ctx;
   VFS vfs(ctx);
   const std::string array_name = "cpp_unit_array";

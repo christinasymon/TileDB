@@ -7,6 +7,8 @@ Types
 -----
 .. doxygentypedef:: tiledb_array_t
     :project: TileDB-C
+.. doxygentypedef:: tiledb_buffer_t
+    :project: TileDB-C
 .. doxygentypedef:: tiledb_config_t
     :project: TileDB-C
 .. doxygentypedef:: tiledb_config_iter_t
@@ -24,6 +26,8 @@ Types
 .. doxygentypedef:: tiledb_domain_t
     :project: TileDB-C
 .. doxygentypedef:: tiledb_query_t
+    :project: TileDB-C
+.. doxygentypedef:: tiledb_subarray_t
     :project: TileDB-C
 .. doxygentypedef:: tiledb_filter_t
     :project: TileDB-C
@@ -344,6 +348,56 @@ Query
 .. doxygenfunction:: tiledb_query_has_results
     :project: TileDB-C
 
+Subarray
+--------
+.. doxygenfunction:: tiledb_subarray_alloc
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_free
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_get_type
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_get_layout
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_get_ndim
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_get_domain
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_add_range
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_get_range
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_get_range_num
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_get_est_result_size
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_get_est_result_size_var
+    :project: TileDB-C
+
+SubarrayPartitioner
+-------------------
+.. doxygenfunction:: tiledb_subarray_partitioner_alloc
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_partitioner_free
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_partitioner_set_result_budget
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_partitioner_set_result_budget_var
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_partitioner_set_memory_budget
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_partitioner_get_result_budget
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_partitioner_get_result_budget_var
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_partitioner_get_memory_budget
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_partitioner_next
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_partitioner_get_current
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_subarray_partitioner_done
+    :project: TileDB-C
+
 Filter
 ------
 .. doxygenfunction:: tiledb_filter_alloc
@@ -483,6 +537,19 @@ Key-value Iterator
 .. doxygenfunction:: tiledb_kv_iter_done
     :project: TileDB-C
 .. doxygenfunction:: tiledb_kv_iter_reset
+    :project: TileDB-C
+
+Buffer
+------
+.. doxygenfunction:: tiledb_buffer_alloc
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_buffer_free
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_buffer_get_type
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_buffer_set_type
+    :project: TileDB-C
+.. doxygenfunction:: tiledb_buffer_get_size
     :project: TileDB-C
 
 Object Management

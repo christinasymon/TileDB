@@ -27,6 +27,9 @@ fi;
 if [[ "$TILEDB_TBB" == "OFF" ]]; then
   bootstrap_args="${bootstrap_args} --disable-tbb";
 fi
+if [[ "$TILEDB_DEBUG" == "ON" ]]; then
+  bootstrap_args="${bootstrap_args} --enable-debug";
+fi
 
 # Add address sanitizer flag if necessary
 if [[ "$TILEDB_CI_ASAN" == "ON" ]]; then
